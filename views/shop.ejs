@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scatch Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-zinc-950 text-white">
+     <% if(error.length > 0){ %>
+    <div  id="flash-message" class="bg-red-100 text-red-700 p-3 rounded mb-3">
+        <%= error[0] %>
+    </div>
+<% } %>
+<% if(success.length > 0){ %>
+    <div id="flash-message" class="bg-green-100 text-green-700 p-3 rounded mb-4">
+        <%= success[0] %>
+    </div>
+<% } %>
+    <!-- Navbar -->
+    <nav class="h-16 border-b border-zinc-800 flex items-center justify-between px-10">
+        <h1 class="text-2xl font-bold tracking-wide">Scatch</h1>
+
+        <div class="flex gap-4">
+            <a href="/cart/<%=user._id%>" class="hover:text-zinc-400">Cart</a>
+            <a href="/profile/<%=user._id%>" class="hover:text-zinc-400">Profile</a>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="flex">
+
+        <!-- Sidebar -->
+        <aside class="w-72 min-h-screen border-r border-zinc-800 p-8">
+
+            <div>
+                <label class="block mb-2 text-zinc-400">Sort By</label>
+
+                <select class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3">
+                    <option>Popular</option>
+                    <option>Newest</option>
+                    <option>Price Low → High</option>
+                    <option>Price High → Low</option>
+                </select>
+            </div>
+
+            <div class="mt-12">
+                <h3 class="font-semibold mb-4">Collections</h3>
+
+                <div class="space-y-3 text-zinc-400">
+                    <p class="cursor-pointer hover:text-white">New Collection</p>
+                    <p class="cursor-pointer hover:text-white">All Products</p>
+                    <p class="cursor-pointer hover:text-white">Discounted Products</p>
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <h3 class="font-semibold mb-4">Filters</h3>
+
+                <div class="space-y-3">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox">
+                        In Stock
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox">
+                        Discounted
+                    </label>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Products -->
+        <main class="flex-1 p-10">
+
+            <div class="grid grid-cols-4 gap-8">
+
+                <!-- Product Card -->
+                <%products.forEach(function(product){%>
+                    <div class="bg-zinc-900 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-600 transition">
+
+                    <div class="h-72 bg-zinc-800">
+                        <img
+                            src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+                            class="w-full h-full object-cover"
+                            alt=""
+                        >
+                    </div>
+
+                    <div class="p-4">
+
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="font-semibold">
+                                    <%= product.name %>
+                                </h2>
+
+                                <p class="text-green-400 font-medium mt-1">
+                                    <% if(product.discount > 0){%>
+                                          <p class="line-through">
+                                            <%= product.price %>
+                                            </p>₹<%= product.discount %>
+                                    <%}else{ %>
+
+                                         ₹ <%= product.price %>
+                                    <%}%>
+                                  
+                                </p>
+                            </div>
+                                <form action="/product/<%= product._id %>" method="POST">
+                                    <button
+                                        type="submit"
+                                        class="w-10 h-10 rounded-full bg-white text-black text-xl flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition-all duration-200 ease-in-out">
+                                        🛒
+                                    </button>
+                                </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <%})%>
+
+               
+
+                
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+<script>
+    setTimeout(() => {
+        const msg = document.getElementById("flash-message");
+        if (msg) msg.remove();
+    }, 3000); // 3 seconds
+</script>
+</html>

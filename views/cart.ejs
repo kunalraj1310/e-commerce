@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Scatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="h-16 border-b border-zinc-800 flex items-center justify-between px-10">
+        <a href="/shop" class="text-2xl font-bold tracking-wide">
+            Scatch
+        </a>
+
+        <a href="/shop" class="text-zinc-400 hover:text-white">
+            ← Continue Shopping
+        </a>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-8 py-10">
+
+        <h1 class="text-3xl font-bold mb-8">
+            Shopping Cart
+        </h1>
+
+        <div class="flex gap-8 items-start">
+
+            <!-- LEFT SIDE : CART ITEMS -->
+            <div class="flex-1">
+
+                <% if(user.cart.length > 0){ %>
+
+                    <% user.cart.forEach((carts)=> { %>
+
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-5">
+
+                            <div class="flex items-center gap-5">
+                                <!-- Image -->
+                                <img
+                                    src="data:image/jpeg;base64,<%= carts.product.image.toString('base64') %>"
+                                    alt="<%= carts.product.name %>"
+                                    class="w-28 h-28 rounded-lg object-cover flex-shrink-0"
+                                >
+
+                                <!-- Product Info -->
+
+                              
+                                <div class="flex-1">
+
+                                    <h2 class="text-lg font-semibold">
+                                        <%= carts.product.name %>
+                                    </h2>
+
+                                    <p class="text-green-400 font-semibold text-lg mt-3">
+                                        ₹<%= carts.product.price %>
+                                    </p>
+
+                                </div>  
+
+                                <!-- Quantity Buttons -->
+                                <div class="flex items-center gap-3">
+                                    <form action="/decrease/<%= carts.product._id%>" method="post">
+                                    <button class="remove w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700">
+                                        -
+                                    </button>
+                                    </form>
+                                    
+
+                                    <span class="quantity font-semibold">
+                                        <%= carts.quantity %>
+                                    </span>
+
+                                    <form action="/increase/<%= carts.product._id%>" method="post">
+                                    <button class="remove w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700">
+                                        +
+                                    </button>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <% }) %>
+
+                <% } else { %>
+
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-10 text-center">
+
+                        <h2 class="text-2xl font-semibold mb-3">
+                            Your Cart is Empty
+                        </h2>
+
+                        <p class="text-zinc-400 mb-6">
+                            Add some products to get started.
+                        </p>
+
+                        <a
+                            href="/shop"
+                            class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold"
+                        >
+                            Continue Shopping
+                        </a>
+
+                    </div>
+
+                <% } %>
+
+            </div>
+
+            <!-- RIGHT SIDE : ORDER SUMMARY -->
+            <div class="w-80 sticky top-6">
+
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+
+                    <h2 class="text-xl font-semibold mb-6">
+                        Order Summary
+                    </h2>
+
+                    <div class="space-y-4 text-zinc-300">
+
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span>₹<%= total  %></span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span>Shipping</span>
+                            <span><% if(shipping>0){%>
+                                ₹<%= shipping %>
+                            <%}else if(shipping === 0 && total === 0 ){%>
+                                 ₹<%= shipping %>
+                            <%}else{%>
+                            <span class="line-through text-zinc-500">
+                                ₹<%= shipping %>
+                            </span>
+
+                            <p class="text-green-400 text-sm font-medium">
+                                Free on orders above ₹4000
+                            </p>
+                           <% }%></span>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <span>Tax</span>
+                            <span  >₹<%= tax %></span>
+                        </div>
+
+                    </div>
+
+                    <hr class="border-zinc-800 my-6">
+
+                    <div class="flex justify-between text-xl font-bold">
+                        <span>Total</span>
+                        <span class="text-green-400" >₹<%= tax + shipping + total %></span>
+                    </div>
+
+                    <button class="w-full mt-6 bg-white text-black py-3 rounded-lg font-semibold hover:bg-zinc-200 transition">
+                        Proceed to Checkout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

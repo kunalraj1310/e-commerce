@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+     <% if(error.length > 0){ %>
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-3">
+        <%= error[0] %>
+    </div>
+<% } %>
+
+    <!-- Back Button -->
+    <div class="p-6">
+        <a href="/shop"
+           class="inline-flex items-center px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition">
+            ← Back
+        </a>
+    </div>
+
+    <div class="max-w-3xl mx-auto bg-white shadow-md rounded-xl p-8">
+
+        <h1 class="text-3xl font-bold mb-8">
+            Create New Product
+        </h1>
+
+        <form action="/products/Create" method="POST" enctype="multipart/form-data">
+
+            <!-- Product Image -->
+            <div class="mb-6">
+                <label class="block font-medium mb-2">
+                    Product Image
+                </label>
+
+                <input
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    class="block w-full border rounded-lg p-2"
+                    required
+                >
+            </div>
+
+            <!-- Product Name & Price -->
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Product Name"
+                    class="border rounded-lg p-3 w-full"
+                    required
+                >
+
+                <input
+                    type="number"
+                    name="price"
+                    placeholder="Product Price"
+                    class="border rounded-lg p-3 w-full"
+                    required
+                >
+            </div>
+
+            <!-- Discount Price -->
+            <div class="mb-6">
+                <input
+                    type="number"
+                    name="discountPrice"
+                    placeholder="Discount Price"
+                    class="border rounded-lg p-3 w-full"
+                >
+            </div>
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            >
+                Create Product
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

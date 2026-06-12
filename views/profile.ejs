@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 min-h-screen text-white">
+
+    <!-- Navbar -->
+    <nav class="flex justify-between items-center px-10 py-5 border-b border-zinc-800">
+        <h1 class="text-2xl font-bold">STACH</h1>
+
+        <a href="/shop"
+            class="px-4 py-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition">
+            Back to Shop
+        </a>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="max-w-4xl mx-auto mt-10 px-5">
+
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
+
+            <!-- Profile Header -->
+            <div class="flex flex-col md:flex-row items-center gap-8">
+
+                <!-- Profile Picture -->
+                <div class="flex flex-col items-center">
+                       <img
+                        src="<%= user.profilepic
+                            ? `data:image/jpeg;base64,${user.profilepic.toString('base64')}`
+                            : 'https://ui-avatars.com/api/?name=User&background=18181b&color=ffffff&size=200' %>"
+                        alt="Profile Picture"
+                        class="w-36 h-36 rounded-full object-cover border-4 border-zinc-700">
+                    <a href="/profile/upload/<%= user._id%>">
+                        <button
+                        class="mt-4 px-4 py-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition">
+                        Change Picture
+                    </button>
+
+                    </a>
+                    
+                </div>
+
+                <!-- User Info -->
+                <div class="flex-1">
+
+                    <h2 class="text-3xl font-bold mb-2">
+                        <%= user.fullname %>
+                    </h2>
+
+                    <p class="text-zinc-400 mb-5">
+                        <%= user.email %>
+                    </p>
+
+                    <div class="grid gap-4">
+
+                        <!-- Role -->
+                        <div class="bg-zinc-800 p-4 rounded-xl">
+                            <p class="text-zinc-400 text-sm">Role</p>
+                            <p class="font-semibold text-lg">
+                                <%= user.role || "User" %>
+                            </p>
+                        </div>
+
+                        <!-- Orders -->
+                        <div class="bg-zinc-800 p-4 rounded-xl">
+                            <p class="text-zinc-400 text-sm">
+                                Orders
+                            </p>
+                            <p class="font-semibold text-lg">
+                                <%= user.orders.length %> Orders
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-10 flex flex-wrap gap-4">
+
+                <a href="/orders"
+                    class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-xl font-medium transition">
+                    View Orders
+                </a>
+
+                <a href="/logout"
+                    class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-xl font-medium transition">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
