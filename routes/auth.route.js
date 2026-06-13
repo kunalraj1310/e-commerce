@@ -6,12 +6,13 @@ const {
 } = require('../controllers/authcontrollers');
 
 const route = express.Router();
+const directLogin = require('../middlewares/directLogin')
 
-route.get("/register", (req, res) => {
+route.get("/register",directLogin, (req, res) => {
     res.render("register");
 });
 
-route.get("/login", (req, res) => {
+route.get("/login",directLogin, (req, res) => {
     res.render("login");
 });
 

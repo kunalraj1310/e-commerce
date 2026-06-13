@@ -2,6 +2,7 @@ const userSchema = require('../models/user.model');
 const generateToken = require('../config/generate-token');
 const bcrypt = require('bcrypt');
 
+
 async function registerUser(req, res) {
     try {
         const finduser = await userSchema.findOne({

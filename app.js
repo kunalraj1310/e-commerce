@@ -11,6 +11,7 @@ const authRouter = require("./routes/auth.route");
 const createOwner = require("./routes/owner.route")
 const profile = require("./routes/profile.route")
 const cart = require("./routes/cart.route")
+const checkout = require('./routes/checkout.route')
 const shop = require("./routes/shop.route")
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -39,5 +40,6 @@ app.use("/", authRouter);
 app.use("/", createOwner);
 app.use("/",shop)
 app.use("/",cart)
+app.use("/",checkout)
 app.use("/",profile)
 module.exports = app;

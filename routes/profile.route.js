@@ -3,12 +3,13 @@ const isLoggedIn = require('../middlewares/isLoggedIn');
 const userModel = require('../models/user.model');
 const router = express.Router()
 const upload = require('../config/multer-config')
+const userAuthorisation = require('../middlewares/userAuthorisation')
 
-router.get("/profile/:id",isLoggedIn,async (req,res)=>{
+router.get("/profile/:id",isLoggedIn,userAuthorisation,async (req,res)=>{
     const user = await userModel.findOne({ email: req.user.email });
     res.render('profile',{user})
 })
-router.get("/profile/upload/:id",isLoggedIn,async (req,res)=>{
+router.get("/profile/upload/:id",isLoggedIn,userAuthorisation,async (req,res)=>{
     const user = await userModel.findOne({email:req.user.email})
     res.render("uploadPic",{user})
 })

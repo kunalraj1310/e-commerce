@@ -2,7 +2,7 @@ const express = require('express');
 const isLoggedIn = require('../middlewares/isLoggedIn');
 const userModel = require('../models/user.model');
 const router = express.Router();
-
+const userAuthorisation = require('../middlewares/userAuthorisation')
 
 router.post('/product/:id',isLoggedIn,async(req,res)=>{
 
@@ -23,7 +23,7 @@ router.post('/product/:id',isLoggedIn,async(req,res)=>{
    
 })
 
-router.get("/cart/:id",isLoggedIn,async (req,res)=>{
+router.get("/cart/:id",isLoggedIn,userAuthorisation,async (req,res)=>{
 
     const user = await userModel
     .findOne({email:req.user.email})
