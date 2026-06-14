@@ -8,6 +8,17 @@
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
 
+    <% if(error.length > 0){ %>
+    <div  id="flash-message" class="bg-red-100 text-red-700 p-3 rounded mb-3">
+        <%= error[0] %>
+    </div>
+<% } %>
+<% if(success.length > 0){ %>
+    <div id="flash-message" class="bg-green-100 text-green-700 p-3 rounded mb-4">
+        <%= success[0] %>
+    </div>
+<% } %>
+
     <!-- Navbar -->
     <nav class="bg-zinc-900 border-b border-zinc-800 px-8 py-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold">STACH</h1>
@@ -27,7 +38,7 @@
                     Shipping Information
                 </h3>
 
-                <form action="/order/<%= user._id%>" method="POST" class="space-y-5">
+                <form action="/order/<%= user._id %>" method="POST" class="space-y-5">
 
                     <div>
                         <label class="block mb-2 text-zinc-300">
@@ -35,6 +46,7 @@
                         </label>
                         <input
                             type="text"
+                            readonly
                             value= <%= user.fullname%>
                             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
                         >
@@ -46,6 +58,7 @@
                         </label>
                         <input
                             type="email"
+                            readonly
                             value=<%= user.email%>
                             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
                         >
@@ -57,6 +70,7 @@
                         </label>
                         <input
                             type="text"
+                            name="phone"
                             placeholder="Phone Number"
                             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
                         >
@@ -68,6 +82,7 @@
                         </label>
                         <textarea
                             rows="4"
+                            name="address"
                             placeholder="Address"
                             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
                         ></textarea>
@@ -81,6 +96,7 @@
                             </label>
                             <input
                                 type="text"
+                                name="city"
                                 placeholder="City"
                                 class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3"
                             >
@@ -92,6 +108,7 @@
                             </label>
                             <input
                                 type="text"
+                                name="pinCode"
                                 placeholder="Pincode"
                                 class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3"
                             >
@@ -219,4 +236,10 @@
     </div>
 
 </body>
+<script>
+    setTimeout(() => {
+        const msg = document.getElementById("flash-message");
+        if (msg) msg.remove();
+    }, 3000); // 3 seconds
+</script>
 </html>

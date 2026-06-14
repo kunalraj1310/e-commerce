@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseSuccess {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left,
+                    rgba(255, 255, 255, 0.9),
+                    transparent 40%),
+                radial-gradient(circle at bottom right,
+                    rgba(220, 220, 220, 0.5),
+                    transparent 40%),
+                linear-gradient(135deg, #f5f5f5, #e5e7eb);
+        }
+
+        .animate-card {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .animate-success {
+            animation: pulseSuccess 2s infinite;
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .order-card {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.08),
+                0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .success-ring {
+            box-shadow:
+                0 0 0 12px rgba(34, 197, 94, 0.08),
+                0 0 40px rgba(34, 197, 94, 0.18);
+        }
+
+        .order-id-card {
+            background: linear-gradient(135deg, #111827, #000000);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .delivery-card {
+            background: linear-gradient(
+                to bottom,
+                rgba(249, 250, 251, 1),
+                rgba(243, 244, 246, 1)
+            );
+        }
+
+        .shop-btn {
+            background: linear-gradient(135deg, #111827, #000000);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+
+    <div class="order-card rounded-3xl p-10 max-w-lg w-full text-center animate-card">
+
+        <!-- Success Icon -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-green-100 p-5 rounded-full animate-success success-ring floating">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-14 w-14 text-green-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
+            Order Confirmed!
+        </h1>
+
+        <!-- Description -->
+        <p class="text-gray-500 leading-relaxed mb-8">
+            Thank you for shopping with us. Your order has been placed
+            successfully and is currently being prepared for shipment.
+        </p>
+
+        <!-- Order ID -->
+        <div class="order-id-card text-white rounded-2xl p-5 mb-6">
+            <p class="text-xs uppercase tracking-[3px] text-gray-400">
+                Order ID
+            </p>
+
+            <p class="text-lg font-mono font-bold mt-2 break-all">
+                <%= order._id %>
+            </p>
+        </div>
+
+        <!-- Delivery -->
+        <div class="delivery-card border border-gray-200 rounded-2xl p-5 mb-8">
+            <p class="text-sm text-gray-500 uppercase tracking-wider">
+                Estimated Delivery
+            </p>
+
+            <p class="font-semibold text-gray-800 text-xl mt-1">
+                3 – 5 Business Days
+            </p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="mb-8">
+            <p class="text-green-600 font-semibold text-sm tracking-wide uppercase">
+                ✓ Order Successfully Recorded
+            </p>
+        </div>
+
+        <!-- CTA -->
+        <a href="/shop"
+            class="shop-btn inline-block w-full text-white py-4 rounded-2xl font-semibold transition-all duration-300">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</body>
+</html>

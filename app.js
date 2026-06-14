@@ -13,12 +13,13 @@ const profile = require("./routes/profile.route")
 const cart = require("./routes/cart.route")
 const checkout = require('./routes/checkout.route')
 const shop = require("./routes/shop.route")
+const orderView = require('./routes/orderView.route')
 const session = require("express-session");
 const flash = require("connect-flash");
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "mysecret",
+        secret:"mysecret",
         resave: false,
         saveUninitialized: false,
     })
@@ -42,4 +43,5 @@ app.use("/",shop)
 app.use("/",cart)
 app.use("/",checkout)
 app.use("/",profile)
+app.use("/",orderView)
 module.exports = app;
