@@ -5,11 +5,12 @@ const router = express.Router();
 const userAuthorisation = require('../middlewares/userAuthorisation')
 
 router.post('/product/:id',isLoggedIn,async(req,res)=>{
-
    const user =  await userModel.findOne({email:req.user.email})
-   
-   const find = user.cart.includes(req.params.id)
+    productId = `${req.params.id}`
 
+   const find = user.cart.find(element => {
+    return element.product.toString() === productId;
+});
    if(!find){
     user.cart.push({product: req.params.id})
    await user.save()
@@ -20,7 +21,6 @@ router.post('/product/:id',isLoggedIn,async(req,res)=>{
     req.flash("error"," Product already added  ")
     res.redirect("/shop")
    }
-   
 })
 
 router.get("/cart/:id",isLoggedIn,userAuthorisation,async (req,res)=>{
@@ -31,7 +31,7 @@ router.get("/cart/:id",isLoggedIn,userAuthorisation,async (req,res)=>{
     // console.log(user.cart)
 
     const total = user.cart.reduce((sum, item) => {
-    return sum + item.product.price * item.quantity;
+        return (sum + item.product.price * item.quantity) - item.product.discount;
     }, 0);
 
     let shipping = 100

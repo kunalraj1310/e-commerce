@@ -92,4 +92,17 @@ router.post('/products/update/:id',upload.single('image'),async (req,res)=>{
     })
     res.redirect('/owner/admin')
 })
+
+
+router.get('/outstock/:id',isLoggedIn,ownerAuthorisation,async (req,res)=>{
+    await productModel.findOneAndUpdate({_id:req.params.id},{stock: 'OutStock' })
+    res.redirect('/owner/admin')
+})
+
+
+router.get('/instock/:id',isLoggedIn,ownerAuthorisation,async (req,res)=>{
+    await productModel.findOneAndUpdate({_id:req.params.id},{stock: 'Instock' })
+    res.redirect('/owner/admin')
+})
+
 module.exports = router;

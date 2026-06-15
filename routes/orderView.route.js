@@ -9,16 +9,27 @@ const productSchema = require('../models/product.model')
 router.get('/orders/:id',isLoggedIn , userAuthorisation, async (req,res)=>{
     const user = await userModel
     .findOne({email:req.user.email})
-    .populate('orders')
+    .populate({
+        path: "orders",
+        populate: {
+            path: "products.product"
+        }
+    })
 
-    const productIds = user.orders.flatMap(order =>
-    order.products.map(item => item.product)
-    );
+    // user.orders.forEach(product => {
+    //      console.log(product.products)   
+    // })
+    // const productIds = user.orders.flatMap(order =>
+    // order.products.map(item => item.product)
+    // );
+    // const productQunatity = user.orders.flatMap(order =>
+    // order.products.map(item => item.qunatity)
+    // );
+    // const products = await productSchema.find({
+    //     _id: { $in: productIds }
+    // });
 
-    const products = await productSchema.find({
-        _id: { $in: productIds }
-    });
-    res.render("orderView",{user, products})
+    res.render("orderView",{user})
 })
 
 module.exports = router

@@ -7,8 +7,15 @@ const productSchema = mongoose.Schema({
     discount:{
         type:Number,
         default: 0
+    },
+    date:{
+        type:Date,
+        default :Date.now()
+    },
+    stock:{
+        type:String,
+        default:"Instock"
     }
-    
 })
 
 module.exports = mongoose.model("product",productSchema)

@@ -156,13 +156,17 @@
                             <span  >₹<%= tax %></span>
                         </div>
 
+                        <div class="flex justify-between">
+                            <span>Discount</span>
+                            <span  > - ₹500</span>
+                        </div>
                     </div>
 
                     <hr class="border-zinc-800 my-6">
 
                     <div class="flex justify-between text-xl font-bold">
                         <span>Total</span>
-                        <span class="text-green-400" >₹<%= tax + shipping + total %></span>
+                        <span class="text-green-400" >₹<%= (tax + shipping + total) - 500 %></span>
                     </div>
                     <a href="/checkout/<%= user._id %>"
                         class="flex items-center justify-center w-full mt-6 bg-white text-black py-3 rounded-lg font-semibold hover:bg-zinc-200 transition">
