@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Product</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <a href="/owner/admin" class="m-12 text-zinc-400 hover:text-white">
+            ← Admin Page
+        </a>
+
+    <div class="max-w-3xl mx-auto py-10 px-4">
+        
+        <div class="bg-white shadow-xl rounded-2xl p-8">
+            
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                Create New Product
+            </h1>
+
+            <p class="text-gray-500 mb-8">
+                Add a new product to your store.
+            </p>
+
+            <form action="/products/create" method="POST" enctype="multipart/form-data" class="space-y-6">
+
+                <!-- Product Name -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Product Name
+                    </label>
+                    <input
+                        type="text"
+                        name="name"
+                        required
+                        placeholder="Enter product name"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                    >
+                </div>
+
+                <!-- Price -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Price (₹)
+                    </label>
+                    <input
+                        type="number"
+                        name="price"
+                        required
+                        placeholder="Enter price"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                    >
+                </div>
+
+
+                <!-- Stock -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                       Price after Discount 
+                    </label>
+                    <input
+                        type="number"
+                        name="discountPrice"
+                        required
+                        placeholder="Available units"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                    >
+                </div>
+                <!-- Product Image -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Product Image
+                    </label>
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        required
+                        class="w-full border border-gray-300 rounded-xl px-4 py-3"
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    type="submit"
+                    class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-800 transition"
+                >
+                    Create Product
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

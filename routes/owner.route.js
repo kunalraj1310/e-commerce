@@ -22,21 +22,33 @@ router.post("/owner", async (req, res) => {
 
         const hash = await bcrypt.hash(req.body.password, 10);
 
-        await ownerModel.create({
+        const admin = await ownerModel.create({
             fullname: req.body.fullname,
             email: req.body.email,
             password: hash
         });
-
+        await userModel.create({
+            _id: admin._id,
+            fullname: req.body.fullname,
+            email: req.body.email,
+            password: hash
+        });
         return res.send("Owner created successfully.");
     } catch (error) {
         return res.send(error.message);
     }
 });
 
-router.get('/owner/admin', isLoggedIn,ownerAuthorisation, async (req, res) => {
-    return res.render("admin");
+router.get('/owner/admin', isLoggedIn  , ownerAuthorisation, async(req, res) => {
+     const products = await productModel.find()
+     res.render("admin",{products})
 });
+
+
+router.get('/products/Create',isLoggedIn,ownerAuthorisation,(req,res)=>{
+    res.render("createProduct" )
+})
+
 
 router.post('/products/Create',isLoggedIn,ownerAuthorisation, upload.single("image"),async (req, res) => {
         const owner = await ownerModel.findOne({email:req.user.email})
@@ -50,8 +62,6 @@ router.post('/products/Create',isLoggedIn,ownerAuthorisation, upload.single("ima
                 image: req.file.buffer
             });
             res.redirect("/owner/admin");
-            owner.products.push(product._id)
-            await owner.save()
 
         } catch (err) {
             console.log(err);
@@ -60,4 +70,26 @@ router.post('/products/Create',isLoggedIn,ownerAuthorisation, upload.single("ima
     }
 );
 
+
+router.get('/product/:id',isLoggedIn,ownerAuthorisation,async (req,res)=>{
+    const product = await productModel.findOne({_id: req.params.id})
+    res.render("updateProduct",{product})
+})
+
+
+router.get('/product/delete/:id',isLoggedIn,ownerAuthorisation,async (req,res)=>{
+    await productModel.findOneAndDelete({_id:req.params.id})
+    res.redirect('/owner/admin')
+})
+
+
+router.post('/products/update/:id',upload.single('image'),async (req,res)=>{
+    await productModel.findOneAndUpdate({_id:req.params.id},{
+        price:req.body.price,
+        name:req.body.name,
+        discount:req.body.discount,
+        image:req.file.buffer
+    })
+    res.redirect('/owner/admin')
+})
 module.exports = router;

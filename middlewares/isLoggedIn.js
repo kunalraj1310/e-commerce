@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/user.model");
 
-async function isLoggedIn(req, res, next) {
+async function isLoggedIn(req , res, next) {
     const token = req.cookies.token;
 
     if (!token) {
@@ -14,7 +14,7 @@ async function isLoggedIn(req, res, next) {
         const user = await userModel
         .findOne({email:decoded.email})
         .select('-password')
-        req.user = user;
+        req.user = user ;
         next();
     } catch (error) {
         return res.send(error.message)

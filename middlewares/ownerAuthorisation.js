@@ -1,16 +1,17 @@
-async function ownerAuthorisation(params) {
-    
+const ownerModel = require("../models/owner.model");
+
+async function ownerAuthorisation(req, res, next) {
+
     const check = await ownerModel.findOne({
-        email: req.user.email
+        _id: req.user.id
     });
 
     if (check) {
-        next()
+        return next();
     }
 
     req.flash("error", "You can't access this page");
-    res.redirect("/login");
-
+    return res.redirect("/login");
 }
 
-module.exports = ownerAuthorisation
+module.exports = ownerAuthorisation;
