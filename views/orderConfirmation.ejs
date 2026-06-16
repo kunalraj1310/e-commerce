@@ -4,178 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmed</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" type="image/png" href="/images/logo.png">
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        * { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes pulseSuccess {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.08);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.5; }
         }
-
         @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
-
-        body {
-            background:
-                radial-gradient(circle at top left,
-                    rgba(255, 255, 255, 0.9),
-                    transparent 40%),
-                radial-gradient(circle at bottom right,
-                    rgba(220, 220, 220, 0.5),
-                    transparent 40%),
-                linear-gradient(135deg, #f5f5f5, #e5e7eb);
+        @keyframes confetti {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
-
-        .animate-card {
-            animation: fadeIn 0.8s ease-out;
+        
+        .animate-fade-up {
+            animation: fadeInUp 0.8s ease-out forwards;
         }
-
-        .animate-success {
-            animation: pulseSuccess 2s infinite;
+        .success-ring {
+            animation: pulseRing 2s ease-in-out infinite;
         }
-
         .floating {
             animation: float 4s ease-in-out infinite;
         }
-
-        .order-card {
-            backdrop-filter: blur(12px);
+        
+        .glass-card {
             background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow:
+            box-shadow: 
                 0 25px 50px rgba(0, 0, 0, 0.08),
-                0 10px 20px rgba(0, 0, 0, 0.05);
+                0 10px 20px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
-
-        .success-ring {
-            box-shadow:
-                0 0 0 12px rgba(34, 197, 94, 0.08),
-                0 0 40px rgba(34, 197, 94, 0.18);
+        
+        .order-id-gradient {
+            background: linear-gradient(135deg, #111827, #1f2937, #111827);
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
         }
-
-        .order-id-card {
-            background: linear-gradient(135deg, #111827, #000000);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-
+        
         .delivery-card {
-            background: linear-gradient(
-                to bottom,
-                rgba(249, 250, 251, 1),
-                rgba(243, 244, 246, 1)
-            );
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 1px solid rgba(34, 197, 94, 0.2);
         }
-
+        
         .shop-btn {
-            background: linear-gradient(135deg, #111827, #000000);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+            background: linear-gradient(135deg, #111827, #374151);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .shop-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti 5s linear infinite;
+        }
+        
+        body {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.08), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.08), transparent 50%),
+                linear-gradient(180deg, #fafafa, #f3f4f6);
         }
     </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center px-4 py-10">
+<body class="min-h-screen flex items-center justify-center px-4 py-10 relative overflow-hidden">
 
-    <div class="order-card rounded-3xl p-10 max-w-lg w-full text-center animate-card">
+    <!-- Confetti Elements -->
+    <div class="confetti-piece bg-red-400 left-10" style="animation-delay: 0s; animation-duration: 4s;"></div>
+    <div class="confetti-piece bg-blue-400 left-25" style="animation-delay: 1s; animation-duration: 5s;"></div>
+    <div class="confetti-piece bg-yellow-400 left-40" style="animation-delay: 2s; animation-duration: 4.5s;"></div>
+    <div class="confetti-piece bg-green-400 left-60" style="animation-delay: 0.5s; animation-duration: 5.5s;"></div>
+    <div class="confetti-piece bg-purple-400 left-75" style="animation-delay: 1.5s; animation-duration: 4s;"></div>
+    <div class="confetti-piece bg-pink-400 left-90" style="animation-delay: 2.5s; animation-duration: 5s;"></div>
+
+    <div class="glass-card rounded-[2.5rem] p-10 md:p-14 max-w-lg w-full text-center animate-fade-up relative z-10">
 
         <!-- Success Icon -->
         <div class="flex justify-center mb-8">
-            <div class="bg-green-100 p-5 rounded-full animate-success success-ring floating">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-14 w-14 text-green-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7" />
-                </svg>
+            <div class="relative">
+                <div class="absolute inset-0 bg-emerald-400 rounded-full success-ring"></div>
+                <div class="relative bg-gradient-to-br from-emerald-400 to-emerald-600 p-6 rounded-full shadow-2xl shadow-emerald-500/30 floating">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
             </div>
         </div>
 
         <!-- Heading -->
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
+        <h1 class="text-5xl font-black text-gray-900 mb-3 tracking-tight">
             Order Confirmed!
         </h1>
-
-        <!-- Description -->
-        <p class="text-gray-500 leading-relaxed mb-8">
-            Thank you for shopping with us. Your order has been placed
-            successfully and is currently being prepared for shipment.
+        <p class="text-gray-500 leading-relaxed mb-10 text-lg">
+            Thank you for shopping with us. Your order has been placed successfully and is being prepared for shipment.
         </p>
 
         <!-- Order ID -->
-        <div class="order-id-card text-white rounded-2xl p-5 mb-6">
-            <p class="text-xs uppercase tracking-[3px] text-gray-400">
-                Order ID
-            </p>
-
-            <p class="text-lg font-mono font-bold mt-2 break-all">
+        <div class="order-id-gradient text-white rounded-2xl p-6 mb-6 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <p class="text-xs uppercase tracking-[4px] text-gray-400 font-medium mb-2">Order ID</p>
+            <p class="text-lg font-mono font-bold tracking-wide break-all">
                 <%= order._id %>
             </p>
         </div>
 
         <!-- Delivery -->
-        <div class="delivery-card border border-gray-200 rounded-2xl p-5 mb-8">
-            <p class="text-sm text-gray-500 uppercase tracking-wider">
-                Estimated Delivery
-            </p>
-
-            <p class="font-semibold text-gray-800 text-xl mt-1">
-                3 – 5 Business Days
-            </p>
+        <div class="delivery-card rounded-2xl p-6 mb-8">
+            <div class="flex items-center justify-center gap-2 mb-2">
+                <span class="text-2xl">🚚</span>
+                <p class="text-sm text-emerald-700 uppercase tracking-wider font-semibold">Estimated Delivery</p>
+            </div>
+            <p class="font-bold text-emerald-900 text-2xl">3 – 5 Business Days</p>
+            <div class="mt-3 flex items-center justify-center gap-1">
+                <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <div class="w-16 h-1 bg-emerald-200 rounded-full"></div>
+                <div class="w-2 h-2 bg-emerald-200 rounded-full"></div>
+                <div class="w-16 h-1 bg-emerald-200 rounded-full"></div>
+                <div class="w-2 h-2 bg-emerald-200 rounded-full"></div>
+            </div>
         </div>
 
         <!-- Success Message -->
-        <div class="mb-8">
-            <p class="text-green-600 font-semibold text-sm tracking-wide uppercase">
-                ✓ Order Successfully Recorded
+        <div class="mb-10 flex items-center justify-center gap-2 bg-emerald-50 rounded-xl py-3 px-4 border border-emerald-100">
+            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-emerald-700 font-semibold text-sm tracking-wide">
+                Order Successfully Recorded
             </p>
         </div>
 
         <!-- CTA -->
-        <a href="/shop"
-            class="shop-btn inline-block w-full text-white py-4 rounded-2xl font-semibold transition-all duration-300">
+        <a href="/shop" class="shop-btn inline-block w-full text-white py-4 rounded-2xl font-bold text-lg">
             Continue Shopping
         </a>
+
+        <p class="mt-6 text-gray-400 text-sm">
+            Need help? <a href="#" class="text-gray-600 hover:text-gray-900 font-medium underline">Contact Support</a>
+        </p>
 
     </div>
 

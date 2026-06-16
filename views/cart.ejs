@@ -1,119 +1,169 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart - Scatch</title>
+    <title>Cart </title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .glass-nav {
+            background: rgba(9, 9, 11, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .cart-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .cart-card:hover {
+            transform: translateX(4px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .qty-btn {
+            transition: all 0.2s ease;
+        }
+        .qty-btn:active {
+            transform: scale(0.9);
+        }
+        .summary-card {
+            background: linear-gradient(180deg, rgba(39, 39, 42, 0.8), rgba(24, 24, 27, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .checkout-btn {
+            background: linear-gradient(135deg, #ffffff, #e4e4e7);
+            transition: all 0.3s ease;
+        }
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px -10px rgba(255, 255, 255, 0.3);
+        }
+        .empty-state {
+            background: radial-gradient(circle at center, rgba(39, 39, 42, 0.5), rgba(24, 24, 27, 0.3));
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+    </style>
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
 
     <% if(error.length > 0){ %>
-    <div  id="flash-message" class="bg-red-100 text-red-700 p-3 rounded mb-3">
-        <%= error[0] %>
+    <div id="flash-message" class="fixed top-6 right-6 z-50 bg-red-500/10 backdrop-blur-xl border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-in">
+        <span class="text-xl">⚠️</span>
+        <div>
+            <p class="font-semibold text-sm">Error</p>
+            <p class="text-sm opacity-80"><%= error[0] %></p>
+        </div>
     </div>
-<% } %>
-<% if(success.length > 0){ %>
-    <div id="flash-message" class="bg-green-100 text-green-700 p-3 rounded mb-4">
-        <%= success[0] %>
+    <% } %>
+    <% if(success.length > 0){ %>
+    <div id="flash-message" class="fixed top-6 right-6 z-50 bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/20 text-emerald-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-in">
+        <span class="text-xl">✅</span>
+        <div>
+            <p class="font-semibold text-sm">Success</p>
+            <p class="text-sm opacity-80"><%= success[0] %></p>
+        </div>
     </div>
-<% } %>
+    <% } %>
+
     <!-- Navbar -->
-    <nav class="h-16 border-b border-zinc-800 flex items-center justify-between px-10">
-        <a href="/shop" class="text-2xl font-bold tracking-wide">
+    <nav class="glass-nav sticky top-0 z-40 h-16 flex items-center justify-between px-6 lg:px-10">
+        <a href="/shop" class="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
             E-Commerce
         </a>
-
-        <a href="/shop" class="text-zinc-400 hover:text-white">
-            ← Continue Shopping
+        <a href="/shop" class="flex items-center gap-2 text-zinc-400 hover:text-white transition px-4 py-2 rounded-xl hover:bg-zinc-800/50">
+            <span>←</span>
+            <span>Continue Shopping</span>
         </a>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-8 py-10">
+    <main class="max-w-7xl mx-auto px-6 lg:px-8 py-10">
 
-        <h1 class="text-3xl font-bold mb-8">
-            Shopping Cart
-        </h1>
+        <div class="flex items-center justify-between mb-10">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+                Shopping Cart
+            </h1>
+            <% if(user.cart.length > 0){ %>
+            <span class="text-zinc-500 text-sm bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full">
+                <%= user.cart.reduce((sum, c) => sum + c.quantity, 0) %> Items
+            </span>
+            <% } %>
+        </div>
 
-        <div class="flex gap-8 items-start">
+        <div class="flex flex-col lg:flex-row gap-8 items-start">
 
             <!-- LEFT SIDE : CART ITEMS -->
-            <div class="flex-1">
+            <div class="flex-1 w-full">
 
                 <% if(user.cart.length > 0){ %>
 
-                    <% user.cart.forEach((carts)=> { %>
+                    <% user.cart.forEach((carts, index)=> { %>
 
-                        <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-5 mb-5">
-
+                        <div class="cart-card bg-zinc-900/60 backdrop-blur border border-zinc-800/60 rounded-2xl p-5 mb-4 animate-in" style=`animation-delay: ${<%= index * 0.1 %>}`>
                             <div class="flex items-center gap-5">
                                 <!-- Image -->
-                                <img
-                                    src="data:image/jpeg;base64,<%= carts.product.image.toString('base64') %>"
-                                    alt="<%= carts.product.name %>"
-                                    class="w-28 h-28 rounded-lg object-cover flex-shrink-0"
-                                >
+                                <div class="relative group">
+                                    <img src="data:image/jpeg;base64,<%= carts.product.image.toString('base64') %>"
+                                        alt="<%= carts.product.name %>"
+                                        class="w-28 h-28 rounded-xl object-cover flex-shrink-0 ring-1 ring-zinc-700 group-hover:ring-zinc-500 transition">
+                                    <div class="absolute inset-0 bg-black/20 rounded-xl opacity-0 group-hover:opacity-100 transition"></div>
+                                </div>
 
                                 <!-- Product Info -->
-
-                              
-                                <div class="flex-1">
-
-                                    <h2 class="text-lg font-semibold">
+                                <div class="flex-1 min-w-0">
+                                    <h2 class="text-lg font-semibold text-white truncate">
                                         <%= carts.product.name %>
                                     </h2>
-
-                                    <p class="text-green-400 font-semibold text-lg mt-3">
+                                    <p class="text-emerald-400 font-bold text-xl mt-2">
                                         ₹<%= carts.product.price %>
                                     </p>
-
+                                    <p class="text-zinc-500 text-sm mt-1">
+                                        Subtotal: ₹<%= carts.product.price * carts.quantity %>
+                                    </p>
                                 </div>  
 
-                                <!-- Quantity Buttons -->
-                                <div class="flex items-center gap-3">
+                                <!-- Quantity Controls -->
+                                <div class="flex items-center gap-2 bg-zinc-800/50 rounded-2xl p-1.5 border border-zinc-700/50">
                                     <form action="/decrease/<%= carts.product._id%>" method="post">
-                                    <button class="remove w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700">
-                                        -
-                                    </button>
+                                        <button class="qty-btn w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-lg font-bold text-zinc-300 hover:text-white transition border border-zinc-700">
+                                            −
+                                        </button>
                                     </form>
                                     
-
-                                    <span class="quantity font-semibold">
+                                    <span class="quantity font-bold text-lg w-10 text-center tabular-nums">
                                         <%= carts.quantity %>
                                     </span>
 
                                     <form action="/increase/<%= carts.product._id%>" method="post">
-                                    <button class="remove w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700">
-                                        +
-                                    </button>
+                                        <button class="qty-btn w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-lg font-bold text-zinc-300 hover:text-white transition border border-zinc-700">
+                                            +
+                                        </button>
                                     </form>
                                 </div>
-
                             </div>
-
                         </div>
 
                     <% }) %>
 
                 <% } else { %>
 
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-10 text-center">
-
-                        <h2 class="text-2xl font-semibold mb-3">
-                            Your Cart is Empty
-                        </h2>
-
-                        <p class="text-zinc-400 mb-6">
-                            Add some products to get started.
+                    <div class="empty-state border border-zinc-800 rounded-3xl p-16 text-center">
+                        <div class="text-7xl mb-6">🛒</div>
+                        <h2 class="text-3xl font-bold mb-3">Your Cart is Empty</h2>
+                        <p class="text-zinc-400 mb-8 max-w-md mx-auto">
+                            Looks like you haven't added anything to your cart yet. Explore our collection and find something you love.
                         </p>
-
-                        <a
-                            href="/shop"
-                            class="inline-block bg-white text-black px-6 py-3 rounded-lg font-semibold"
-                        >
+                        <a href="/shop" class="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-2xl font-bold hover:bg-zinc-200 transition shadow-lg shadow-white/10">
                             Continue Shopping
+                            <span>→</span>
                         </a>
-
                     </div>
 
                 <% } %>
@@ -121,62 +171,84 @@
             </div>
 
             <!-- RIGHT SIDE : ORDER SUMMARY -->
-            <div class="w-80 sticky top-6">
+            <% if(user.cart.length > 0){ %>
+            <div class="w-full lg:w-80 lg:sticky lg:top-24">
 
-                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                <div class="summary-card rounded-3xl p-6 shadow-2xl shadow-black/50">
 
-                    <h2 class="text-xl font-semibold mb-6">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+                        <span>📋</span>
                         Order Summary
                     </h2>
 
-                    <div class="space-y-4 text-zinc-300">
+                    <div class="space-y-4 text-zinc-300 text-sm">
 
-                        <div class="flex justify-between">
-                            <span>Subtotal</span>
-                            <span>₹<%= total  %></span>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-zinc-500">Subtotal</span>
+                            <span class="font-semibold text-white">₹<%= total %></span>
                         </div>
 
-                        <div class="flex justify-between">
-                            <span>Shipping</span>
-                            <span><% if(shipping>0){%>
-                                ₹<%= shipping %>
-                            <%}else if(shipping === 0 && total === 0 ){%>
-                                 ₹<%= shipping %>
-                            <%}else{%>
-
-
-                            <p class="text-green-400 text-sm font-medium">
-                                Free on orders above ₹4000
-                            </p>
-                           <% }%></span>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-zinc-500">Shipping</span>
+                            <span class="font-semibold">
+                                <% if(shipping>0){%>
+                                    ₹<%= shipping %>
+                                <%}else if(shipping === 0 && total === 0 ){%>
+                                    ₹<%= shipping %>
+                                <%}else{%>
+                                    <span class="text-emerald-400 text-xs font-medium bg-emerald-500/10 px-3 py-1 rounded-full">
+                                        Free on orders above ₹4000
+                                    </span>
+                                <% }%>
+                            </span>
                         </div>
 
-                        <div class="flex justify-between">
-                            <span>Tax</span>
-                            <span  >₹<%= tax %></span>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-zinc-500">Tax (18%)</span>
+                            <span class="font-semibold text-white">₹<%= tax %></span>
                         </div>
 
-                        <div class="flex justify-between">
-                            <span>Discount</span>
-                            <span  > - ₹500</span>
+                        <div class="flex justify-between items-center py-2">
+                            <span class="text-zinc-500">Discount</span>
+                            <span class="font-bold text-emerald-400">− ₹500</span>
                         </div>
                     </div>
 
-                    <hr class="border-zinc-800 my-6">
+                    <hr class="border-zinc-700/50 my-6">
 
-                    <div class="flex justify-between text-xl font-bold">
-                        <span>Total</span>
-                        <span class="text-green-400" >₹<%= (tax + shipping + total) - 500 %></span>
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-lg font-bold">Total</span>
+                        <div class="text-right">
+                            <span class="text-3xl font-extrabold text-emerald-400 tabular-nums">₹<%= (tax + shipping + total) - 500 %></span>
+                            <p class="text-xs text-zinc-500 mt-1">Including all taxes</p>
+                        </div>
                     </div>
+
                     <a href="/checkout/<%= user._id %>"
-                        class="flex items-center justify-center w-full mt-6 bg-white text-black py-3 rounded-lg font-semibold hover:bg-zinc-200 transition">
-                            Proceed to Checkout
-                        </a>
-                                            
+                        class="checkout-btn flex items-center justify-center w-full mt-6 text-black py-4 rounded-2xl font-bold text-lg">
+                        Proceed to Checkout
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+
+                    <div class="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-500">
+                        <span>🔒</span>
+                        <span>Secure checkout powered by SSL</span>
+                    </div>
 
                 </div>
 
+                <!-- Trust Badges -->
+                <div class="mt-6 flex items-center justify-center gap-4 text-2xl opacity-40">
+                    <span>💳</span>
+                    <span>🏦</span>
+                    <span>📱</span>
+                    <span>🛡️</span>
+                </div>
+
             </div>
+            <% } %>
 
         </div>
 
@@ -187,6 +259,6 @@
     setTimeout(() => {
         const msg = document.getElementById("flash-message");
         if (msg) msg.remove();
-    }, 3000); // 3 seconds
+    }, 3000);
 </script>
 </html>

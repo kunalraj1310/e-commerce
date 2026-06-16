@@ -5,66 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders</title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .glass-header {
+            background: rgba(9, 9, 11, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .order-card {
+            background: linear-gradient(180deg, rgba(39, 39, 42, 0.6), rgba(24, 24, 27, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .order-card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .badge-delivered {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05));
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        .badge-price {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .detail-section {
+            background: rgba(9, 9, 11, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .product-row {
+            transition: all 0.2s ease;
+        }
+        .product-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .toggle-btn {
+            transition: all 0.3s ease;
+        }
+        .toggle-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.1);
+        }
+        .address-card {
+            background: linear-gradient(135deg, rgba(39, 39, 42, 0.8), rgba(24, 24, 27, 0.6));
+        }
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 2000px; }
+        }
+        .expand-animation {
+            animation: slideDown 0.5s ease-out forwards;
+        }
+        .empty-state {
+            background: radial-gradient(circle at center, rgba(39, 39, 42, 0.3), transparent 70%);
+        }
+    </style>
 </head>
 
 <body class="bg-zinc-950 min-h-screen text-white">
 
     <!-- Header -->
-    <div class="sticky top-0 z-50 bg-zinc-950/90 backdrop-blur border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-
-            <a
-                href="/shop"
-                class="text-zinc-400 hover:text-white transition font-medium"
-            >
-                ← Back to Shop
+    <div class="glass-header sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 py-4 flex items-center justify-between">
+            <a href="/shop" class="flex items-center gap-2 text-zinc-400 hover:text-white transition px-4 py-2 rounded-xl hover:bg-zinc-800/50">
+                <span>←</span>
+                <span class="font-medium">Back to Shop</span>
             </a>
-
             <div class="text-right">
-                <h1 class="text-xl md:text-2xl font-bold">
-                    My Orders
-                </h1>
-
-                <p class="text-zinc-500 text-sm">
-                    <%= user.orders.length %> Orders
-                </p>
+                <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">My Orders</h1>
+                <p class="text-zinc-500 text-sm mt-1"><%= user.orders.length %> Order<%= user.orders.length !== 1 ? 's' : '' %></p>
             </div>
-
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 py-10">
 
         <% if(user.orders.length === 0){ %>
 
             <!-- Empty State -->
-            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center">
-
-                <div class="text-7xl mb-6">📦</div>
-
-                <h2 class="text-3xl font-bold">
-                    No Orders Yet
-                </h2>
-
-                <p class="text-zinc-400 mt-3 max-w-md mx-auto">
-                    Looks like you haven't purchased anything yet.
-                    Start exploring products and place your first order.
+            <div class="empty-state rounded-3xl p-16 text-center border border-zinc-800/50">
+                <div class="text-8xl mb-6 animate-bounce">📦</div>
+                <h2 class="text-4xl font-bold mb-3">No Orders Yet</h2>
+                <p class="text-zinc-400 mt-3 max-w-md mx-auto text-lg leading-relaxed">
+                    Looks like you haven't purchased anything yet. Start exploring products and place your first order.
                 </p>
-
-                <a
-                    href="/shop"
-                    class="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-white text-black rounded-xl font-semibold hover:bg-zinc-200 transition"
-                >
-                    Continue Shopping →
+                <a href="/shop" class="inline-flex items-center gap-2 mt-10 px-8 py-4 bg-white text-black rounded-2xl font-bold hover:bg-zinc-200 transition shadow-xl shadow-white/10">
+                    Continue Shopping
+                    <span>→</span>
                 </a>
-
             </div>
 
         <% } else { %>
 
             <div class="space-y-8">
 
-                <% user.orders.forEach(function(order){ %>
+                <% user.orders.forEach(function(order, idx){ %>
 
                     <% let amount = Math.round((Number(order.totalAmount) + 500) / 1.18) %>
                     <% const tax = Math.round(0.18 * Number(amount)) %>
@@ -76,226 +114,164 @@
                         <% amount = Math.round(0.97 * amount) %>
                     <% } %>
 
-                    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-lg hover:border-zinc-700 transition duration-300">
+                    <div class="order-card rounded-3xl overflow-hidden shadow-2xl shadow-black/30">
 
                         <!-- Order Header -->
-                        <div class="p-6 border-b border-zinc-800">
-
+                        <div class="p-6 lg:p-8 border-b border-zinc-800/60">
                             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
 
-                                <div>
-                                    <p class="text-zinc-500 text-xs uppercase tracking-[3px]">
-                                        Order ID
-                                    </p>
-
-                                    <h2 class="text-lg md:text-xl font-semibold mt-1">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <p class="text-zinc-500 text-xs uppercase tracking-[3px] font-medium">Order ID</p>
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                    </div>
+                                    <h2 class="text-xl md:text-2xl font-bold font-mono tracking-tight">
                                         #<%= order._id %>
                                     </h2>
-
-                                    <p class="text-zinc-400 text-sm mt-2">
-                                        Successfully delivered and completed.
+                                    <p class="text-zinc-400 text-sm mt-2 flex items-center gap-2">
+                                        <span>📅</span>
+                                        Successfully delivered and completed
                                     </p>
                                 </div>
 
                                 <div class="flex flex-wrap gap-3 items-center">
-
-                                    <div class="bg-green-500/10 text-green-400 px-4 py-2 rounded-full text-sm font-medium">
-                                        ✓ Delivered
+                                    <div class="badge-delivered text-emerald-400 px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+                                        <span>✓</span>
+                                        Delivered
                                     </div>
-
-                                    <div class="bg-zinc-800 px-4 py-2 rounded-full text-sm font-semibold">
-                                        ₹<%= order.totalAmount %>
+                                    <div class="badge-price px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-1">
+                                        <span>₹</span>
+                                        <%= order.totalAmount %>
                                     </div>
-
-                                    <button
-                                        onclick="toggleOrder('<%= order._id %>')"
-                                        class="px-4 py-2 bg-white text-black rounded-xl font-medium hover:bg-zinc-200 transition"
-                                    >
-                                        View Details
+                                    <button onclick="toggleOrder('<%= order._id %>')" 
+                                        class="toggle-btn px-5 py-2.5 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 transition flex items-center gap-2">
+                                        <span>View Details</span>
+                                        <svg id="arrow-<%= order._id %>" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
                                     </button>
-
                                 </div>
 
                             </div>
-
                         </div>
 
                         <!-- Ordered Products -->
-                        <div class="p-6">
-
-                            <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-5">
-
-                                <div class="flex items-center justify-between mb-5">
-
-                                    <h3 class="font-semibold text-lg">
-                                        Ordered Products
-                                    </h3>
-
-                                    <span class="text-zinc-400 text-sm">
+                        <div class="p-6 lg:p-8">
+                            <div class="detail-section rounded-2xl p-6">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-zinc-800 rounded-lg flex items-center justify-center text-sm">📦</div>
+                                        <h3 class="font-bold text-lg">Ordered Products</h3>
+                                    </div>
+                                    <span class="text-zinc-400 text-sm bg-zinc-800/50 px-4 py-2 rounded-full">
                                         <%= order.products.reduce((total, item) => total + item.quantity, 0) %>
                                         Item<%= order.products.reduce((total, item) => total + item.quantity, 0) > 1 ? "s" : "" %>
                                     </span>
-
                                 </div>
 
-                                <div class="space-y-4">
-
+                                <div class="space-y-3">
                                     <% order.products.forEach(item => { %>
-
-                                        <div class="flex items-center justify-between">
-
-                                            <div class="flex items-center gap-4">
-
-                                                <img
-                                                    src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
-                                                    alt="<%= item.product.name %>"
-                                                    class="w-16 h-16 rounded-xl object-cover border border-zinc-700"
-                                                >
-
-                                                <div>
-
-                                                    <p class="font-medium">
-                                                        <%= item.product.name %>
-                                                    </p>
-
-                                                    <p class="text-zinc-400 text-sm">
-                                                        Quantity: <%= item.quantity %>
-                                                    </p>
-
-                                                </div>
-
+                                    <div class="product-row flex items-center justify-between p-4 rounded-xl">
+                                        <div class="flex items-center gap-4">
+                                            <img src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
+                                                alt="<%= item.product.name %>"
+                                                class="w-16 h-16 rounded-xl object-cover ring-1 ring-zinc-700">
+                                            <div>
+                                                <p class="font-semibold text-white"><%= item.product.name %></p>
+                                                <p class="text-zinc-500 text-sm mt-0.5">Quantity: <%= item.quantity %></p>
                                             </div>
-
-                                            <p class="font-semibold">
-                                                ₹<%= item.product.price %>
-                                            </p>
-
                                         </div>
-
+                                        <p class="font-bold text-emerald-400 text-lg">₹<%= item.product.price %></p>
+                                    </div>
                                     <% }) %>
-
                                 </div>
-
                             </div>
-
                         </div>
 
                         <!-- Address -->
-                        <div class="px-6 pb-6">
-
-                            <div class="bg-zinc-800 rounded-2xl p-4">
-
-                                <p class="text-zinc-500 text-xs uppercase tracking-wider mb-2">
-                                    Shipping Address
-                                </p>
-
-                                <p class="text-sm leading-relaxed text-zinc-200">
+                        <div class="px-6 lg:px-8 pb-6 lg:pb-8">
+                            <div class="address-card rounded-2xl p-5 border border-zinc-700/50">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-zinc-500 text-xs uppercase tracking-wider font-semibold">📍 Shipping Address</span>
+                                </div>
+                                <p class="text-sm leading-relaxed text-zinc-300">
                                     <%= order.address %>
                                 </p>
-
                             </div>
-
                         </div>
 
                         <!-- Expandable Details -->
-                        <div
-                            id="order-<%= order._id %>"
-                            class="hidden border-t border-zinc-800 bg-zinc-950"
-                        >
+                        <div id="order-<%= order._id %>" class="hidden border-t border-zinc-800/60 bg-zinc-950/50">
 
-                            <div class="p-6 grid lg:grid-cols-2 gap-6">
+                            <div class="p-6 lg:p-8 grid lg:grid-cols-2 gap-6">
 
                                 <!-- Payment Breakdown -->
-                                <div class="bg-zinc-900 rounded-2xl p-5 border border-zinc-800">
-
-                                    <h3 class="font-semibold text-lg mb-5">
-                                        Payment Breakdown
-                                    </h3>
-
-                                    <div class="space-y-3">
-
-                                        <div class="flex justify-between">
-                                            <span class="text-zinc-400">Subtotal</span>
-                                            <span>₹<%= amount %></span>
-                                        </div>
-
-                                        <div class="flex justify-between">
-                                            <span class="text-zinc-400">Shipping</span>
-
-                                            <span class="<%= shipping === 0 ? 'text-green-400' : '' %>">
-                                                <%= shipping === 0 ? 'FREE' : `₹${shipping}` %>
-                                            </span>
-                                        </div>
-
-                                        <div class="flex justify-between">
-                                            <span class="text-zinc-400">Tax</span>
-                                            <span>₹<%= tax %></span>
-                                        </div>
-
-                                        <div class="flex justify-between">
-                                            <span class="text-zinc-400">Discount</span>
-
-                                            <span class="text-green-400">
-                                                -₹500
-                                            </span>
-                                        </div>
-
-                                        <hr class="border-zinc-700">
-
-                                        <div class="flex justify-between text-lg font-bold">
-                                            <span>Total Paid</span>
-                                            <span>₹<%= order.totalAmount %></span>
-                                        </div>
-
+                                <div class="detail-section rounded-2xl p-6">
+                                    <div class="flex items-center gap-3 mb-6">
+                                        <div class="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400 text-sm">💳</div>
+                                        <h3 class="font-bold text-lg">Payment Breakdown</h3>
                                     </div>
 
+                                    <div class="space-y-4">
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="text-zinc-400">Subtotal</span>
+                                            <span class="font-semibold">₹<%= amount %></span>
+                                        </div>
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="text-zinc-400">Shipping</span>
+                                            <span class="<%= shipping === 0 ? 'text-emerald-400 font-bold' : 'font-semibold' %>">
+                                                <%= shipping === 0 ? '🎉 FREE' : `₹${shipping}` %>
+                                            </span>
+                                        </div>
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="text-zinc-400">Tax (18%)</span>
+                                            <span class="font-semibold">₹<%= tax %></span>
+                                        </div>
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="text-zinc-400">Discount</span>
+                                            <span class="text-emerald-400 font-bold">−₹500</span>
+                                        </div>
+                                        <hr class="border-zinc-700/50">
+                                        <div class="flex justify-between items-center py-2">
+                                            <span class="text-lg font-bold">Total Paid</span>
+                                            <span class="text-2xl font-extrabold text-emerald-400">₹<%= order.totalAmount %></span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Payment Information -->
-                                <div class="bg-zinc-900 rounded-2xl p-5 border border-zinc-800">
-
-                                    <h3 class="font-semibold text-lg mb-5">
-                                        Payment Information
-                                    </h3>
-
-                                    <div class="space-y-4">
-
-                                        <div>
-                                            <p class="text-zinc-500 text-sm">
-                                                Method
-                                            </p>
-
-                                            <div class="mt-2 bg-zinc-800 border border-zinc-700 px-4 py-3 rounded-xl inline-block">
-                                                Cash On Delivery
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <p class="text-zinc-500 text-sm">
-                                                Status
-                                            </p>
-
-                                            <p class="text-green-400 mt-2 font-medium">
-                                                ✓ Payment Successful
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <p class="text-zinc-500 text-sm">
-                                                Order Status
-                                            </p>
-
-                                            <p class="text-green-400 mt-2 font-medium">
-                                                ✓ Delivered
-                                            </p>
-                                        </div>
-
+                                <div class="detail-section rounded-2xl p-6">
+                                    <div class="flex items-center gap-3 mb-6">
+                                        <div class="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center text-purple-400 text-sm">🔐</div>
+                                        <h3 class="font-bold text-lg">Payment Information</h3>
                                     </div>
 
+                                    <div class="space-y-6">
+                                        <div>
+                                            <p class="text-zinc-500 text-sm mb-2">Payment Method</p>
+                                            <div class="bg-zinc-800/50 border border-zinc-700/50 px-5 py-3 rounded-xl inline-flex items-center gap-2">
+                                                <span>💵</span>
+                                                <span class="font-semibold">Cash On Delivery</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-zinc-500 text-sm mb-2">Payment Status</p>
+                                            <p class="text-emerald-400 font-bold flex items-center gap-2">
+                                                <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                                                Payment Successful
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="text-zinc-500 text-sm mb-2">Order Status</p>
+                                            <p class="text-emerald-400 font-bold flex items-center gap-2">
+                                                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                                                Delivered
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
-
                         </div>
 
                     </div>
@@ -311,7 +287,14 @@
     <script>
         function toggleOrder(id) {
             const element = document.getElementById(`order-${id}`);
+            const arrow = document.getElementById(`arrow-${id}`);
             element.classList.toggle("hidden");
+            if (!element.classList.contains("hidden")) {
+                element.classList.add("expand-animation");
+                arrow.style.transform = "rotate(180deg)";
+            } else {
+                arrow.style.transform = "rotate(0deg)";
+            }
         }
     </script>
 

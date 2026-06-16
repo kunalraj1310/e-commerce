@@ -5,230 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="icon" type="image/png" href="/images/logo.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .glass-nav {
+            background: rgba(9, 9, 11, 0.85);
+            backdrop-filter: blur(20px);
+        }
+        .form-input {
+            background: rgba(39, 39, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: rgba(39, 39, 42, 0.8);
+        }
+        .payment-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .payment-option:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(39, 39, 42, 0.7);
+        }
+        .payment-option input:checked + div {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .summary-card {
+            background: linear-gradient(180deg, rgba(39, 39, 42, 0.8), rgba(24, 24, 27, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .place-order-btn {
+            background: linear-gradient(135deg, #ffffff, #e4e4e7);
+            transition: all 0.3s ease;
+        }
+        .place-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px -10px rgba(255, 255, 255, 0.25);
+        }
+        .product-thumb {
+            transition: all 0.3s ease;
+        }
+        .product-thumb:hover {
+            transform: scale(1.05);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+    </style>
 </head>
 <body class="bg-zinc-950 text-white min-h-screen">
 
     <% if(error.length > 0){ %>
-    <div  id="flash-message" class="bg-red-100 text-red-700 p-3 rounded mb-3">
-        <%= error[0] %>
+    <div id="flash-message" class="fixed top-6 right-6 z-50 bg-red-500/10 backdrop-blur-xl border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span class="text-xl">⚠️</span>
+        <div>
+            <p class="font-semibold text-sm">Error</p>
+            <p class="text-sm opacity-80"><%= error[0] %></p>
+        </div>
     </div>
-<% } %>
-<% if(success.length > 0){ %>
-    <div id="flash-message" class="bg-green-100 text-green-700 p-3 rounded mb-4">
-        <%= success[0] %>
+    <% } %>
+    <% if(success.length > 0){ %>
+    <div id="flash-message" class="fixed top-6 right-6 z-50 bg-emerald-500/10 backdrop-blur-xl border border-emerald-500/20 text-emerald-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span class="text-xl">✅</span>
+        <div>
+            <p class="font-semibold text-sm">Success</p>
+            <p class="text-sm opacity-80"><%= success[0] %></p>
+        </div>
     </div>
-<% } %>
+    <% } %>
 
     <!-- Navbar -->
-    <nav class="bg-zinc-900 border-b border-zinc-800 px-8 py-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">STACH</h1>
-        <a href="/cart" class="text-zinc-300 hover:text-white">Back to Cart</a>
+    <nav class="glass-nav border-b border-zinc-800 px-6 lg:px-8 py-4 flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-lg flex items-center justify-center font-bold border border-zinc-600">
+                S
+            </div>
+            <h1 class="text-xl font-bold tracking-tight">STACH</h1>
+        </div>
+        <a href="/cart" class="flex items-center gap-2 text-zinc-400 hover:text-white transition px-4 py-2 rounded-xl hover:bg-zinc-800/50">
+            <span>←</span>
+            <span>Back to Cart</span>
+        </a>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-5 py-10">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-10">
 
-        <h2 class="text-4xl font-bold mb-8">Checkout</h2>
+        <div class="mb-10 animate-up">
+            <h2 class="text-4xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">Checkout</h2>
+            <p class="text-zinc-500 mt-2">Complete your order by filling in the details below</p>
+        </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
 
             <!-- Shipping Form -->
-            <div class="lg:col-span-2 bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+            <div class="lg:col-span-2 animate-up" style="animation-delay: 0.1s">
+                <div class="bg-zinc-900/50 backdrop-blur rounded-3xl p-6 lg:p-8 border border-zinc-800/60">
 
-                <h3 class="text-2xl font-semibold mb-6">
-                    Shipping Information
-                </h3>
-
-                <form action="/order/<%= user._id %>" method="POST" class="space-y-5">
-
-                    <div>
-                        <label class="block mb-2 text-zinc-300">
-                            Full Name
-                        </label>
-                        <input
-                            type="text"
-                            readonly
-                            value= <%= user.fullname%>
-                            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
-                        >
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400 text-lg">📦</div>
+                        <h3 class="text-2xl font-bold">Shipping Information</h3>
                     </div>
 
-                    <div>
-                        <label class="block mb-2 text-zinc-300">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            readonly
-                            value=<%= user.email%>
-                            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
-                        >
-                    </div>
+                    <form action="/order/<%= user._id %>" method="POST" class="space-y-6">
 
-                    <div>
-                        <label class="block mb-2 text-zinc-300">
-                            Phone Number
-                        </label>
-                        <input
-                            type="text"
-                            name="phone"
-                            placeholder="Phone Number"
-                            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
-                        >
-                    </div>
-
-                    <div>
-                        <label class="block mb-2 text-zinc-300">
-                            Address
-                        </label>
-                        <textarea
-                            rows="4"
-                            name="address"
-                            placeholder="Address"
-                            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
-                        ></textarea>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-5">
-
-                        <div>
-                            <label class="block mb-2 text-zinc-300">
-                                City
-                            </label>
-                            <input
-                                type="text"
-                                name="city"
-                                placeholder="City"
-                                class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3"
-                            >
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-zinc-400">Full Name</label>
+                                <input type="text" readonly value="<%= user.fullname%>"
+                                    class="form-input w-full rounded-xl px-4 py-3.5 text-white outline-none cursor-not-allowed opacity-70">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-zinc-400">Email</label>
+                                <input type="email" readonly value="<%= user.email%>"
+                                    class="form-input w-full rounded-xl px-4 py-3.5 text-white outline-none cursor-not-allowed opacity-70">
+                            </div>
                         </div>
 
                         <div>
-                            <label class="block mb-2 text-zinc-300">
-                                Pincode
-                            </label>
-                            <input
-                                type="text"
-                                name="pinCode"
-                                placeholder="Pincode"
-                                class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3"
-                            >
+                            <label class="block mb-2 text-sm font-medium text-zinc-400">Phone Number <span class="text-red-400">*</span></label>
+                            <input type="text" name="phone" placeholder="+91 98765 43210"
+                                class="form-input w-full rounded-xl px-4 py-3.5 text-white outline-none placeholder-zinc-600">
                         </div>
 
-                    </div>
-
-                    <div>
-                        <label class="block mb-3 text-zinc-300">
-                            Payment Method
-                        </label>
-
-                        <div class="space-y-3">
-
-                            <label class="flex items-center gap-3 bg-zinc-800 p-4 rounded-lg cursor-pointer">
-                                <input type="radio" name="payment" checked>
-                                <span>Cash on Delivery (COD)</span>
-                            </label>
-
-                            <!-- <label class="flex items-center gap-3 bg-zinc-800 p-4 rounded-lg cursor-pointer">
-                                <input type="radio" name="payment">
-                                <span>UPI Payment</span>
-                            </label>
-
-                            <label class="flex items-center gap-3 bg-zinc-800 p-4 rounded-lg cursor-pointer">
-                                <input type="radio" name="payment">
-                                <span>Credit / Debit Card</span>
-                            </label> -->
-
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-zinc-400">Delivery Address <span class="text-red-400">*</span></label>
+                            <textarea rows="3" name="address" placeholder="Enter your full address..."
+                                class="form-input w-full rounded-xl px-4 py-3.5 text-white outline-none placeholder-zinc-600 resize-none"></textarea>
                         </div>
-                    </div>
-                    <button
-                    type="submit"
-                    class="w-full mt-6 bg-white text-black py-3 rounded-xl font-semibold text-lg hover:bg-zinc-200 transition duration-200"
-                >
-                    Place Order
-                </button>
 
-                </form>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-zinc-400">City <span class="text-red-400">*</span></label>
+                                <input type="text" name="city" placeholder="Mumbai"
+                                    class="form-input w-full rounded-xl px-4 py-3.5 text-white outline-none placeholder-zinc-600">
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-sm font-medium text-zinc-400">Pincode <span class="text-red-400">*</span></label>
+                                <input type="text" name="pinCode" placeholder="400001"
+                                    class="form-input w-full rounded-xl px-4 py-3.5 text-white outline-none placeholder-zinc-600">
+                            </div>
+                        </div>
 
+                        <div class="pt-4">
+                            <label class="block mb-4 text-sm font-medium text-zinc-400">Payment Method</label>
+                            <div class="space-y-3">
+                                <label class="payment-option flex items-center gap-4 bg-zinc-800/40 border border-zinc-700/50 p-4 rounded-2xl cursor-pointer">
+                                    <input type="radio" name="payment" checked class="w-5 h-5 text-blue-500 accent-blue-500">
+                                    <div class="flex items-center gap-3 flex-1">
+                                        <div class="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-xl">💵</div>
+                                        <div>
+                                            <p class="font-semibold">Cash on Delivery (COD)</p>
+                                            <p class="text-xs text-zinc-500">Pay when you receive</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="place-order-btn w-full mt-8 text-black py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2">
+                            <span>Place Order</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </button>
+
+                    </form>
+
+                </div>
             </div>
 
             <!-- Order Summary -->
-            <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 h-fit sticky top-5">
+            <div class="animate-up" style="animation-delay: 0.2s">
+                <div class="summary-card rounded-3xl p-6 h-fit lg:sticky lg:top-24 shadow-2xl shadow-black/50">
 
-                <h3 class="text-2xl font-semibold mb-6">
-                    Order Summary
-                </h3>
-                                    <% user.cart.forEach(function(item) { %>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400 text-lg">🛍️</div>
+                        <h3 class="text-xl font-bold">Order Summary</h3>
+                    </div>
 
-                        <div class="flex gap-4 mb-5">
-
-                            <img
-                                src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
-                                class="w-20 h-20 object-cover rounded-lg"
-                                alt="<%= item.product.name %>"
-                            >
-
-                            <div>
-                                <h4 class="font-semibold">
-                                    <%= item.product.name %>
-                                </h4>
-
-                                <p class="text-zinc-400 text-sm">
-                                    Quantity: <%= item.quantity %>
-                                </p>
-
-                                <p class="font-bold">
-                                    ₹<%= item.product.price * item.quantity %>
-                                </p>
+                    <!-- Products List -->
+                    <div class="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                        <% user.cart.forEach(function(item) { %>
+                        <div class="flex gap-4 p-3 bg-zinc-800/30 rounded-xl product-thumb">
+                            <img src="data:image/jpeg;base64,<%= item.product.image.toString('base64') %>"
+                                class="w-16 h-16 object-cover rounded-lg ring-1 ring-zinc-700"
+                                alt="<%= item.product.name %>">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-medium text-sm truncate"><%= item.product.name %></h4>
+                                <p class="text-zinc-500 text-xs mt-0.5">Qty: <%= item.quantity %></p>
+                                <p class="font-bold text-emerald-400 text-sm mt-1">₹<%= item.product.price * item.quantity %></p>
                             </div>
-
                         </div>
-
-                    <% }) %>
-                <hr class="border-zinc-800 my-5">
-
-                <div class="mt-6 space-y-4">
-
-                    <div class="flex items-center justify-between text-zinc-300">
-                        <span>Subtotal</span>
-                        <span class="font-medium">₹<%= total %></span>
+                        <% }) %>
                     </div>
 
-                    <div class="flex items-center justify-between text-zinc-300">
-                        <span>Shipping</span>
-                        <span class="font-medium text-green-400">
-                            ₹<%= shipping %>
-                        </span>
+                    <hr class="border-zinc-700/50 my-5">
+
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between text-zinc-400">
+                            <span>Subtotal</span>
+                            <span class="font-medium text-white">₹<%= total %></span>
+                        </div>
+                        <div class="flex justify-between text-zinc-400">
+                            <span>Shipping</span>
+                            <span class="font-medium text-emerald-400"><%= shipping === 0 ? 'FREE' : '₹' + shipping %></span>
+                        </div>
+                        <div class="flex justify-between text-zinc-400">
+                            <span>Tax</span>
+                            <span class="font-medium text-white">₹<%= tax %></span>
+                        </div>
+                        <div class="flex justify-between text-zinc-400">
+                            <span>Discount</span>
+                            <span class="font-medium text-emerald-400">−₹500</span>
+                        </div>
                     </div>
 
-                    <div class="flex items-center justify-between text-zinc-300">
-                        <span>Tax</span>
-                        <span class="font-medium">
-                            ₹<%= tax %>
-                        </span>
+                    <hr class="border-zinc-700/50 my-5">
+
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold">Total</span>
+                        <span class="text-3xl font-extrabold text-emerald-400 tabular-nums">₹<%= (total + shipping + tax) - 500 %></span>
                     </div>
 
-                    <div class="flex items-center justify-between text-zinc-300">
-                        <span>Discount</span>
-                        <span class="font-medium text-green-400">
-                            -₹500
-                        </span>
+                    <div class="mt-4 p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-xl">
+                        <p class="text-xs text-emerald-400 text-center">🎉 You saved ₹<%= 500 + (shipping === 0 ? Math.round(total/40) : 0) %> on this order!</p>
                     </div>
 
                 </div>
-
-                <hr class="border-zinc-800 my-6">
-
-                <div class="flex items-center justify-between">
-                    <span class="text-xl font-bold text-white">
-                        Total
-                    </span>
-
-                    <span class="text-2xl font-bold text-white">
-                        ₹<%= (total + shipping + tax) - 500 %>
-                    </span>
-                </div>
-
-                
             </div>
 
         </div>
@@ -240,6 +254,6 @@
     setTimeout(() => {
         const msg = document.getElementById("flash-message");
         if (msg) msg.remove();
-    }, 3000); // 3 seconds
+    }, 3000);
 </script>
 </html>

@@ -3,67 +3,447 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BagStore</title>
-
+    <title>E-commerce - Your Ultimate Shopping Destination</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: blobFloat 12s ease-in-out infinite;
+        }
+        @keyframes blobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -50px) scale(1.1); }
+            66% { transform: translate(-30px, 40px) scale(0.9); }
+        }
+        
+        .hero-image {
+            animation: heroFloat 6s ease-in-out infinite;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #1f2937;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-secondary:hover {
+            background: #1f2937;
+            color: white;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(31, 41, 55, 0.25);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+            border-color: rgba(79, 70, 229, 0.2);
+        }
+        
+        .category-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+        }
+        .category-card:hover .category-image {
+            transform: scale(1.1);
+        }
+        .category-image {
+            transition: transform 0.6s ease;
+        }
+        
+        .cta-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 40px -10px rgba(79, 70, 229, 0.4);
+        }
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 25px 60px -10px rgba(79, 70, 229, 0.5);
+        }
+        
+        .badge-float {
+            animation: badgeFloat 3s ease-in-out infinite;
+        }
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .marquee {
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
 </head>
 <body class="bg-gray-50 overflow-x-hidden">
 
-    <section class="min-h-screen flex items-center px-6 lg:px-20">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                    E-C
+                </div>
+                <span class="text-xl font-bold text-gray-900 tracking-tight">E-Commerce</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-gray-600 hover:text-gray-900 font-medium transition">Features</a>
+                <a href="#categories" class="text-gray-600 hover:text-gray-900 font-medium transition">Categories</a>
+                <a href="#testimonials" class="text-gray-600 hover:text-gray-900 font-medium transition">Reviews</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="/login" class="text-gray-600 hover:text-gray-900 font-medium px-4 py-2 transition">Sign In</a>
+                <a href="/login">
+                    <button class="btn-primary text-white px-6 py-2.5 rounded-xl font-bold text-sm">
+                        Get Started
+                    </button>
+                </a>
+            </div>
+        </div>
+    </nav>
 
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+    <!-- Background Blobs -->
+    <div class="blob bg-indigo-200 w-[500px] h-[500px] rounded-full top-0 right-0 -translate-y-1/2 translate-x-1/3" style="animation-delay: 0s;"></div>
+    <div class="blob bg-purple-200 w-[400px] h-[400px] rounded-full bottom-0 left-0 translate-y-1/3 -translate-x-1/4" style="animation-delay: -4s;"></div>
+    <div class="blob bg-pink-100 w-[300px] h-[300px] rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="animation-delay: -2s;"></div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center px-6 lg:px-20 pt-20 relative">
+
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center w-full">
 
             <!-- Left Content -->
-            <div>
+            <div class="animate-up">
+                <div class="badge-float inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-5 py-2.5 rounded-full text-sm font-bold mb-8 border border-indigo-200">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span>
+                    New Collection 2026
+                </div>
 
-                <span class="bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold">
-                    Premium Collection 2026
-                </span>
-
-                <h1 class="text-5xl md:text-7xl font-bold mt-6 leading-tight">
-                    Carry Your
-                    <span class="text-orange-500">
-                        Style
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tight mb-8">
+                    Shop
+                    <span class="relative inline-block">
+                        <span class="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Everything</span>
+                        <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
+                            <path d="M2 10C80 2 220 2 298 10" stroke="#6366f1" stroke-width="5" stroke-linecap="round" opacity="0.3"/>
+                        </svg>
                     </span>
-                    Everywhere.
+                    <br>You Love.
                 </h1>
 
-                <p class="mt-6 text-lg text-gray-600 max-w-xl">
-                    Discover premium backpacks, travel bags, handbags and
-                    lifestyle accessories designed for comfort, elegance
-                    and everyday adventures.
+                <p class="text-xl text-gray-600 max-w-xl leading-relaxed mb-10">
+                    Discover millions of products across fashion, electronics, home decor, beauty, and more. Your one-stop destination for all your shopping needs.
                 </p>
 
-                <div class="flex gap-4 mt-10">
-
+                <div class="flex flex-wrap gap-4">
                     <a href="/login">
-                        <button class="bg-black text-white px-8 py-4 rounded-xl hover:bg-gray-800 transition">
-                            Shop Now
+                        <button class="btn-primary text-white px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-3">
+                            Start Shopping
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
                         </button>
                     </a>
-
                     <a href="/login">
-                        <button class="border border-black px-8 py-4 rounded-xl hover:bg-black hover:text-white transition">
-                            Explore Collection
+                        <button class="btn-secondary text-gray-900 px-10 py-5 rounded-2xl font-bold text-lg flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Watch Video
                         </button>
                     </a>
+                </div>
 
+                <!-- Trust Indicators -->
+                <div class="mt-12 flex items-center gap-8 text-gray-400">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">⭐</span>
+                        <div>
+                            <span class="font-bold text-gray-900 text-lg">4.9/5</span>
+                            <span class="text-sm block">Customer Rating</span>
+                        </div>
+                    </div>
+                    <div class="w-px h-12 bg-gray-300"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🛍️</span>
+                        <div>
+                            <span class="font-bold text-gray-900 text-lg">2M+</span>
+                            <span class="text-sm block">Products</span>
+                        </div>
+                    </div>
+                    <div class="w-px h-12 bg-gray-300"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🚚</span>
+                        <div>
+                            <span class="font-bold text-gray-900 text-lg">Free</span>
+                            <span class="text-sm block">Shipping</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Image -->
+            <div class="relative hidden lg:block animate-up" style="animation-delay: 0.2s;">
+                <div class="absolute -top-20 -left-20 w-80 h-80 bg-indigo-200 rounded-full blur-3xl opacity-40"></div>
+                <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-purple-200 rounded-full blur-3xl opacity-40"></div>
+                
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1200"
+                        alt="Shopping Experience"
+                        class="hero-image relative rounded-[2.5rem] w-full h-[600px] object-cover">
+                    
+                    <!-- Floating Badge 1 -->
+                    <div class="absolute -left-6 top-1/4 bg-white rounded-2xl p-4 shadow-xl flex items-center gap-3 badge-float" style="animation-duration: 3s;">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-2xl">🔥</div>
+                        <div>
+                            <p class="font-bold text-gray-900">Trending Now</p>
+                            <p class="text-sm text-gray-500">50K+ orders today</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge 2 -->
+                    <div class="absolute -right-4 bottom-1/4 bg-white rounded-2xl p-4 shadow-xl flex items-center gap-3 badge-float" style="animation-duration: 4s; animation-delay: 1s;">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-2xl">🏷️</div>
+                        <div>
+                            <p class="font-bold text-gray-900">Big Sale</p>
+                            <p class="text-sm text-gray-500">Up to 70% off</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge 3 -->
+                    <div class="absolute right-10 -top-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl p-4 shadow-xl flex items-center gap-3 badge-float" style="animation-duration: 3.5s; animation-delay: 0.5s;">
+                        <div class="text-3xl">⚡</div>
+                        <div>
+                            <p class="font-bold">Flash Deals</p>
+                            <p class="text-sm opacity-80">Every 6 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Brand Marquee -->
+    <section class="py-12 bg-gray-900 overflow-hidden">
+        <div class="flex whitespace-nowrap">
+            <div class="marquee flex items-center gap-16 text-gray-500 text-lg font-bold uppercase tracking-widest">
+                <span>🛍️ Fashion</span>
+                <span>💻 Electronics</span>
+                <span>🏠 Home & Living</span>
+                <span>💄 Beauty</span>
+                <span>👟 Sports</span>
+                <span>📚 Books</span>
+                <span>🎮 Gaming</span>
+                <span>🧸 Toys</span>
+                <span>🛍️ Fashion</span>
+                <span>💻 Electronics</span>
+                <span>🏠 Home & Living</span>
+                <span>💄 Beauty</span>
+                <span>👟 Sports</span>
+                <span>📚 Books</span>
+                <span>🎮 Gaming</span>
+                <span>🧸 Toys</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-24 px-6 lg:px-20 relative">
+
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="text-center mb-16">
+                <span class="text-indigo-600 font-bold text-sm uppercase tracking-wider">Why Choose Us</span>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mt-3 mb-4">The E-Commerce Advantage</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">We go above and beyond to ensure you have the best shopping experience possible</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <div class="feature-card rounded-3xl p-10 text-center">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">🚀</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Lightning Fast Delivery</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Get your orders delivered within 24-48 hours with our express shipping network.
+                    </p>
+                </div>
+
+                <div class="feature-card rounded-3xl p-10 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">🛡️</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Secure Payments</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Your transactions are protected with bank-level encryption and fraud protection.
+                    </p>
+                </div>
+
+                <div class="feature-card rounded-3xl p-10 text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">↩️</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Easy Returns</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Not satisfied? Return within 30 days for a full refund, no questions asked.
+                    </p>
+                </div>
+
+                <div class="feature-card rounded-3xl p-10 text-center">
+                    <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">💰</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Best Price Guarantee</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Find a lower price elsewhere? We'll match it and give you an extra 10% off.
+                    </p>
+                </div>
+
+                <div class="feature-card rounded-3xl p-10 text-center">
+                    <div class="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">🎁</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Exclusive Rewards</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Earn points on every purchase and unlock VIP perks, discounts, and early access.
+                    </p>
+                </div>
+
+                <div class="feature-card rounded-3xl p-10 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">🌍</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Global Shipping</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        We deliver to over 190 countries with real-time tracking on every order.
+                    </p>
                 </div>
 
             </div>
 
-            <!-- Right Image -->
-            <div class="relative">
+        </div>
 
-                <div class="absolute -top-10 -left-10 w-48 h-48 bg-orange-200 rounded-full blur-3xl opacity-50"></div>
+    </section>
 
-                <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-yellow-200 rounded-full blur-3xl opacity-50"></div>
+    <!-- Categories -->
+    <section id="categories" class="py-24 px-6 lg:px-20 bg-gray-100/50">
 
-                <img
-                    src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1200"
-                    alt="Luxury Bag"
-                    class="relative rounded-3xl shadow-2xl w-full h-[650px] object-cover"
-                >
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="text-center mb-16">
+                <span class="text-indigo-600 font-bold text-sm uppercase tracking-wider">Explore</span>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mt-3 mb-4">Shop by Category</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">From everyday essentials to luxury items, find exactly what you need</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=600" alt="Fashion" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">👕</span>
+                        <h3 class="text-xl font-bold text-white">Fashion</h3>
+                        <p class="text-white/70 text-sm mt-1">50K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1498049860654-af1a5c5668ba?q=80&w=600" alt="Electronics" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">💻</span>
+                        <h3 class="text-xl font-bold text-white">Electronics</h3>
+                        <p class="text-white/70 text-sm mt-1">30K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=600" alt="Home & Living" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">🏠</span>
+                        <h3 class="text-xl font-bold text-white">Home & Living</h3>
+                        <p class="text-white/70 text-sm mt-1">25K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600" alt="Beauty" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">💄</span>
+                        <h3 class="text-xl font-bold text-white">Beauty</h3>
+                        <p class="text-white/70 text-sm mt-1">20K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600" alt="Sports" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">👟</span>
+                        <h3 class="text-xl font-bold text-white">Sports</h3>
+                        <p class="text-white/70 text-sm mt-1">15K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600" alt="Books" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">📚</span>
+                        <h3 class="text-xl font-bold text-white">Books</h3>
+                        <p class="text-white/70 text-sm mt-1">40K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?q=80&w=600" alt="Gaming" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">🎮</span>
+                        <h3 class="text-xl font-bold text-white">Gaming</h3>
+                        <p class="text-white/70 text-sm mt-1">10K+ items</p>
+                    </div>
+                </a>
+
+                <a href="/login" class="category-card group relative rounded-3xl overflow-hidden aspect-[4/5] bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1558060370-d644479cb6f7?q=80&w=600" alt="Toys" class="category-image w-full h-full object-cover opacity-80 group-hover:opacity-60 transition">
+                    <div class="absolute inset-0 flex flex-col justify-end p-6">
+                        <span class="text-4xl mb-2">🧸</span>
+                        <h3 class="text-xl font-bold text-white">Toys & Kids</h3>
+                        <p class="text-white/70 text-sm mt-1">18K+ items</p>
+                    </div>
+                </a>
 
             </div>
 
@@ -71,46 +451,130 @@
 
     </section>
 
-    <!-- Visual Features -->
-    <section class="pb-24 px-6 lg:px-20">
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-24 px-6 lg:px-20">
 
-        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-
-            <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
-                <div class="text-5xl mb-4">🎒</div>
-                <h3 class="text-xl font-bold">Premium Quality</h3>
-                <p class="text-gray-500 mt-3">
-                    Crafted with durable and stylish materials.
-                </p>
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="text-center mb-16">
+                <span class="text-indigo-600 font-bold text-sm uppercase tracking-wider">Testimonials</span>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mt-3 mb-4">Loved by Millions</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">See what our customers have to say about their shopping experience</p>
             </div>
 
-            <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
-                <div class="text-5xl mb-4">✨</div>
-                <h3 class="text-xl font-bold">Modern Designs</h3>
-                <p class="text-gray-500 mt-3">
-                    Minimal and fashionable bags for every lifestyle.
-                </p>
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <div class="testimonial-card rounded-3xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <span class="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6">"The fastest delivery I've ever experienced! Ordered a laptop and got it the next morning. The packaging was premium too!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">RJ</div>
+                        <div>
+                            <p class="font-bold text-gray-900">Rahul Jain</p>
+                            <p class="text-sm text-gray-500">Mumbai, India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card rounded-3xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <span class="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6">"Amazing product range! I found everything I needed for my home renovation in one place. The prices are unbeatable."</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white font-bold">SP</div>
+                        <div>
+                            <p class="font-bold text-gray-900">Sneha Patel</p>
+                            <p class="text-sm text-gray-500">Bangalore, India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card rounded-3xl p-8 shadow-lg">
+                    <div class="flex items-center gap-1 mb-4">
+                        <span class="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6">"Customer service is top-notch! Had an issue with my order and they resolved it within hours. Highly recommended!"</p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold">AK</div>
+                        <div>
+                            <p class="font-bold text-gray-900">Arjun Kumar</p>
+                            <p class="text-sm text-gray-500">Delhi, India</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="bg-white rounded-3xl p-8 shadow-sm text-center">
-                <div class="text-5xl mb-4">🚚</div>
-                <h3 class="text-xl font-bold">Fast Delivery</h3>
-                <p class="text-gray-500 mt-3">
-                    Quick and secure shipping on every order.
-                </p>
-            </div>
-
-        </div>
-
-        <div class="text-center mt-16">
-            <a href="/login">
-                <button class="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-xl text-lg font-semibold transition">
-                    Get Started
-                </button>
-            </a>
         </div>
 
     </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-6 lg:px-20 bg-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black text-white mb-6">Ready to Start Shopping?</h2>
+            <p class="text-gray-400 text-xl mb-10 max-w-2xl mx-auto">Join over 5 million happy customers and discover why E-Commerce is India's favorite shopping destination.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/login">
+                    <button class="cta-btn text-white px-12 py-5 rounded-2xl text-xl font-bold flex items-center gap-3">
+                        Create Free Account
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </button>
+                </a>
+               
+            </div>
+            <p class="text-gray-500 mt-8 text-sm">No credit card required • Cancel anytime • 24/7 support</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-400 py-16 px-6 lg:px-20">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold">E-C</div>
+                    <span class="text-xl font-bold text-white">E-Commerce</span>
+                </div>
+                <p class="text-sm leading-relaxed">Your ultimate shopping destination for everything you need. Quality products, unbeatable prices, and exceptional service.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Shop</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white transition">All Products</a></li>
+                    <li><a href="#" class="hover:text-white transition">New Arrivals</a></li>
+                    <li><a href="#" class="hover:text-white transition">Best Sellers</a></li>
+                    <li><a href="#" class="hover:text-white transition">Deals & Offers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Support</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+                    <li><a href="#" class="hover:text-white transition">Track Order</a></li>
+                    <li><a href="#" class="hover:text-white transition">Returns</a></li>
+                    <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4">Connect</h4>
+                <div class="flex gap-3">
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-indigo-600 transition text-white">📘</a>
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-pink-600 transition text-white">📸</a>
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-sky-500 transition text-white">🐦</a>
+                    <a href="#" class="w-10 h-10 bg-gray-800 rounded-xl flex items-center justify-center hover:bg-red-600 transition text-white">▶️</a>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-gray-800 text-center text-sm">
+            <p>© 2026 E-Commerce . All rights reserved. Made with ❤️ for shoppers everywhere.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
