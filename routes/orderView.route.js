@@ -16,19 +16,6 @@ router.get('/orders/:id',isLoggedIn , userAuthorisation, async (req,res)=>{
         }
     })
 
-    // user.orders.forEach(product => {
-    //      console.log(product.products)   
-    // })
-    // const productIds = user.orders.flatMap(order =>
-    // order.products.map(item => item.product)
-    // );
-    // const productQunatity = user.orders.flatMap(order =>
-    // order.products.map(item => item.qunatity)
-    // );
-    // const products = await productSchema.find({
-    //     _id: { $in: productIds }
-    // });
-
     res.render("orderView",{user})
 })
 

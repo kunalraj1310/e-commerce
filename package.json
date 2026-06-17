@@ -1,14 +1,14 @@
 {
   "name": "new-folder",
   "version": "1.0.0",
-  "description": "",
+  "description": "A full-stack e-commerce platform built with Node.js, Express.js, MongoDB, and EJS, featuring secure user authentication, product browsing, search and filtering, shopping cart management, order placement, and order tracking. The application includes an admin dashboard for product CRUD operations, inventory management, and order monitoring. Implemented session-based authentication, flash messaging, image uploads, responsive UI design with Tailwind CSS, and deployed the application on cloud hosting platforms.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Kunal Raj",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
